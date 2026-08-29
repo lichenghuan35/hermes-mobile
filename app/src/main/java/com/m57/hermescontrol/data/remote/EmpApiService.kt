@@ -1,7 +1,9 @@
 package com.m57.hermescontrol.data.remote
 
+import com.m57.hermescontrol.data.model.ApproveResult
 import com.m57.hermescontrol.data.model.DashboardResponse
 import com.m57.hermescontrol.data.model.EmployeeProfile
+import com.m57.hermescontrol.data.model.TaskDetailResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,4 +34,24 @@ interface EmpApiService {
         @Path("name") name: String,
         @Body body: Map<String, Any?>,
     ): Response<EmployeeProfile>
+
+    // ── 任务详情 + 任务群聊 + 拍板（PRD 5.3）──
+    @GET("api/tasks/{taskId}")
+    suspend fun getTaskDetail(
+        @Path("taskId") taskId: String,
+    ): Response<TaskDetailResponse>
+
+    /** 在任务群聊发评论（author 默认 boss）。 */
+    @POST("api/tasks/{taskId}/comment")
+    suspend fun postTaskComment(
+        @Path("taskId") taskId: String,
+        @Body body: Map<String, String>,
+    ): Response<Map<String, Any?>>
+
+    /** 总裁拍板：一句话 → 卡住解除变进行中。 */
+    @POST("api/tasks/{taskId}/approve")
+    suspend fun approveTask(
+        @Path("taskId") taskId: String,
+        @Body body: Map<String, String>,
+    ): Response<ApproveResult>
 }

@@ -2,6 +2,7 @@ package com.m57.hermescontrol.ui.dashboard
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.m57.hermescontrol.NavigationController
 import com.m57.hermescontrol.data.model.DashboardEmployee
 import com.m57.hermescontrol.data.model.DashboardResponse
 import com.m57.hermescontrol.theme.DashboardBlue
@@ -99,7 +101,12 @@ fun DashboardScreen(
                     if (dashboard == null) {
                         ErrorContent("暂无数据", onRetry = { viewModel.load(initial = true) })
                     } else {
-                        DashboardContent(dashboard)
+                        DashboardContent(
+                            dashboard = dashboard,
+                            onTaskClick = { taskId ->
+                                NavigationController.navigateTo(com.m57.hermescontrol.TaskDetailKey(taskId))
+                            },
+                        )
                     }
                 }
             }
@@ -128,7 +135,10 @@ private fun ErrorContent(
 }
 
 @Composable
-private fun DashboardContent(dashboard: DashboardResponse) {
+private fun DashboardContent(
+    dashboard: DashboardResponse,
+    onTaskClick: (String) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
@@ -141,7 +151,7 @@ private fun DashboardContent(dashboard: DashboardResponse) {
 
         // ② 需要拍板
         item {
-            ApprovalSection(dashboard)
+            ApprovalSection(dashboard = dashboard, onTaskClick = onTaskClick)
         }
 
         // ③ 员工看板
@@ -233,7 +243,10 @@ private fun KpiCell(
 
 // ── ② 需要拍板 ────────────────────────────────────────────────
 @Composable
-private fun ApprovalSection(dashboard: DashboardResponse) {
+private fun ApprovalSection(
+    dashboard: DashboardResponse,
+    onTaskClick: (String) -> Unit,
+) {
     val tasks = dashboard.waitingApprovalTasks
     if (tasks.isEmpty()) {
         Card(
@@ -264,7 +277,14 @@ private fun ApprovalSection(dashboard: DashboardResponse) {
                 color = StatusRed,
             )
             tasks.forEach { t ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onTaskClick(t.id) }
+                            .padding(vertical = 4.dp),
+                ) {
                     Icon(Icons.Filled.ErrorOutline, null, tint = StatusRed, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(8.dp))
                     Column(Modifier.weight(1f)) {
