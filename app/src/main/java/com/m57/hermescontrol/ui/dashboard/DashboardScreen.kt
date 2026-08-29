@@ -106,6 +106,9 @@ fun DashboardScreen(
                             onTaskClick = { taskId ->
                                 NavigationController.navigateTo(com.m57.hermescontrol.TaskDetailKey(taskId))
                             },
+                            onEmployeeClick = { empName ->
+                                NavigationController.navigateTo(com.m57.hermescontrol.EmployeeCardKey(empName))
+                            },
                         )
                     }
                 }
@@ -138,6 +141,7 @@ private fun ErrorContent(
 private fun DashboardContent(
     dashboard: DashboardResponse,
     onTaskClick: (String) -> Unit,
+    onEmployeeClick: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -165,7 +169,7 @@ private fun DashboardContent(
             )
         }
         items(dashboard.employees, key = { it.name }) { emp ->
-            EmployeeRow(emp)
+            EmployeeRow(emp = emp, onClick = { onEmployeeClick(emp.name) })
         }
     }
 }
@@ -306,10 +310,16 @@ private fun ApprovalSection(
 
 // ── ③ 员工看板 ────────────────────────────────────────────────
 @Composable
-private fun EmployeeRow(emp: DashboardEmployee) {
+private fun EmployeeRow(
+    emp: DashboardEmployee,
+    onClick: () -> Unit,
+) {
     val color = statusColor(emp.status)
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = DashboardWhite),
         border = BorderStroke(1.dp, DashboardBorder),

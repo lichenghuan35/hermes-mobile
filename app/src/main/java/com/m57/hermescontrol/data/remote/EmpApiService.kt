@@ -2,6 +2,7 @@ package com.m57.hermescontrol.data.remote
 
 import com.m57.hermescontrol.data.model.ApproveResult
 import com.m57.hermescontrol.data.model.DashboardResponse
+import com.m57.hermescontrol.data.model.EmployeeCard
 import com.m57.hermescontrol.data.model.EmployeeProfile
 import com.m57.hermescontrol.data.model.TaskDetailResponse
 import retrofit2.Response
@@ -54,4 +55,10 @@ interface EmpApiService {
         @Path("taskId") taskId: String,
         @Body body: Map<String, String>,
     ): Response<ApproveResult>
+
+    // ── 员工名片聚合（PRD 5.4/5.5）──
+    @GET("api/employees/{name}")
+    suspend fun getEmployeeCard(
+        @Path("name") name: String,
+    ): Response<EmployeeCard>
 }

@@ -31,6 +31,10 @@ import kotlinx.serialization.Serializable
     val taskId: String,
 ) : NavKey
 
+@Serializable data class EmployeeCardKey(
+    val name: String,
+) : NavKey
+
 @Serializable data object ToolsetsScreen : NavKey
 
 @Serializable data class ToolsetDetailKey(

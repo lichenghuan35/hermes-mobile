@@ -55,6 +55,7 @@ import com.m57.hermescontrol.theme.LocalHermesStatusColors
 import com.m57.hermescontrol.ui.common.DisableDrawerGestures
 import com.m57.hermescontrol.ui.common.DrawerGestureController
 import com.m57.hermescontrol.ui.common.LocalDrawerGestureController
+import com.m57.hermescontrol.ui.employeecard.EmployeeCardScreen
 import com.m57.hermescontrol.ui.plugins.MemoryProviderDetailScreen
 import com.m57.hermescontrol.ui.settings.SettingsAboutPage
 import com.m57.hermescontrol.ui.settings.SettingsAppearancePage
@@ -166,6 +167,14 @@ private fun appEntryProvider(
     entry<TaskDetailKey> { key ->
         TaskDetailScreen(
             taskId = key.taskId,
+            onBack = { NavigationController.goBack() },
+        )
+    }
+
+    // ── Employee card (PRD 5.4/5.5) ─────────────────────────────────
+    entry<EmployeeCardKey> { key ->
+        EmployeeCardScreen(
+            name = key.name,
             onBack = { NavigationController.goBack() },
         )
     }
