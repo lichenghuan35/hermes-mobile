@@ -132,6 +132,7 @@
     <string name="screen_channels">Channels</string>
     <string name="screen_logs">Logs</string>
     <string name="screen_kanban">Kanban</string>
+    <string name="screen_dashboard">驾驶舱</string>
     <string name="screen_achievements">Achievements</string>
     <string name="screen_history">History</string>
     <string name="screen_processes">Processes</string>

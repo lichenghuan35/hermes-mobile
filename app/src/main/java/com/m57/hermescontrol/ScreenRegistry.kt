@@ -40,6 +40,7 @@ import com.m57.hermescontrol.ui.channels.ChannelsScreen as ChannelsScreenContent
 import com.m57.hermescontrol.ui.chat.ChatScreen as ChatScreenContent
 import com.m57.hermescontrol.ui.config.ConfigScreen as ConfigScreenContent
 import com.m57.hermescontrol.ui.cron.CronJobsScreen as CronJobsScreenContent
+import com.m57.hermescontrol.ui.dashboard.DashboardScreen as DashboardScreenContent
 import com.m57.hermescontrol.ui.files.FilesScreen as FilesScreenContent
 import com.m57.hermescontrol.ui.gateway.GatewayScreen as GatewayScreenContent
 import com.m57.hermescontrol.ui.kanban.KanbanScreen as KanbanScreenContent
@@ -86,6 +87,12 @@ object ScreenRegistry {
                 Icons.AutoMirrored.Filled.Chat,
                 DrawerSection.CONVERSE,
             ) { sessionId, openDrawer -> ChatScreenContent(onOpenDrawer = openDrawer, sessionId = sessionId) },
+            ScreenDefinition(
+                DashboardScreen,
+                R.string.screen_dashboard,
+                Icons.Filled.BarChart,
+                DrawerSection.CONVERSE,
+            ) { sessionId, openDrawer -> DashboardScreenContent(onOpenDrawer = openDrawer) },
             ScreenDefinition(
                 HistoryScreen,
                 R.string.screen_history,
