@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.m57.hermescontrol.data.config.ConnectionProfile
 import com.m57.hermescontrol.data.config.resolveBaseUrl
 import com.m57.hermescontrol.data.local.AuthManager
+import com.m57.hermescontrol.data.local.EmpApiKeyStore
 import com.m57.hermescontrol.data.remote.ApiClient
 import com.m57.hermescontrol.data.remote.CleartextPolicy
+import com.m57.hermescontrol.data.remote.EmpApiClient
 import com.m57.hermescontrol.data.remote.NetworkResult
 import com.m57.hermescontrol.data.remote.ServerEndpoint
 import com.m57.hermescontrol.data.remote.safeApiCall
@@ -53,6 +55,9 @@ data class SettingsUiState(
     val profileToDeleteId: String? = null,
     val profileToDeleteName: String = "",
     val navigateToLogin: Boolean = false,
+    // 总裁 API key（emp-api Bearer key，驾驶舱用）
+    val empApiKey: String = "",
+    val empApiKeySaved: Boolean = false,
 )
 
 class SettingsViewModel(
@@ -82,6 +87,8 @@ class SettingsViewModel(
         val appLanguage = AuthManager.getAppLanguage()
         val renameProfileName =
             profiles.firstOrNull { p -> p.id == selectedId }?.name ?: ""
+        // emp-api Bearer key（加密存储，可能未设置）
+        val empApiKey = EmpApiKeyStore.get() ?: ""
         val transportWarning =
             runCatching {
                 ServerEndpoint.parse(baseUrl, CleartextPolicy.ALLOW_WITH_WARNING).securityWarning
@@ -102,6 +109,8 @@ class SettingsViewModel(
                 selectedProfileId = selectedId,
                 renameProfileName = renameProfileName,
                 appLanguage = appLanguage,
+                empApiKey = empApiKey,
+                empApiKeySaved = false,
             )
         }
     }
@@ -316,6 +325,18 @@ class SettingsViewModel(
     fun onChatFontScaleChange(scale: Float) {
         _uiState.update { it.copy(chatFontScale = scale, isSaved = false) }
         AuthManager.setChatFontScale(scale)
+    }
+
+    // ── 总裁 API key（emp-api Bearer key）─────────────
+    fun onEmpApiKeyChange(value: String) {
+        _uiState.update { it.copy(empApiKey = value, empApiKeySaved = false) }
+    }
+
+    /** 保存总裁 API key：调 EmpApiClient.setApiKey（内部加密持久化 + rebuild）。 */
+    fun saveEmpApiKey() {
+        val key = _uiState.value.empApiKey
+        EmpApiClient.setApiKey(key)
+        _uiState.update { it.copy(empApiKeySaved = true) }
     }
 
     /** Clear all auth credentials — logs out and returns to landing screen. */

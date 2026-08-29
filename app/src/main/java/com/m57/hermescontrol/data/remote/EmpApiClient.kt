@@ -1,6 +1,7 @@
 package com.m57.hermescontrol.data.remote
 
 import com.m57.hermescontrol.data.local.AuthManager
+import com.m57.hermescontrol.data.local.EmpApiKeyStore
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -13,12 +14,12 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
  *  - baseUrl = dashboard base url 后拼 `/emp-api/`（nginx 反代前缀）
  *  - 鉴权 = 独立 Bearer API_SERVER_KEY（不是 dashboard 的 cookie / token）
  *
- * 不要在 APK 里硬编码 API key —— key 由「我的/设置」页运行时填写，
- * 通过 [setApiKey] 注入后 [rebuild]，存进 EncryptedSharedPreferences（后续接）。
+ * API key 通过 [setApiKey] 注入并持久化到 [EmpApiKeyStore]（EncryptedSharedPreferences，
+ * AES256-GCM）。key 为空时请求不带鉴权头（后端 401），驾驶舱提示先填 key。
  */
 object EmpApiClient {
     @Volatile
-    private var apiKey: String? = null
+    private var apiKey: String? = EmpApiKeyStore.get()
 
     @Volatile
     private var retrofit: Retrofit? = null
@@ -26,11 +27,16 @@ object EmpApiClient {
     @Volatile
     private var service: EmpApiService? = null
 
-    /** 运行时注入 emp-api 的 Bearer key。key 为空时请求不带鉴权头（后端 401）。 */
+    /** 注入 emp-api 的 Bearer key，并加密持久化。key 为空时请求不带鉴权头。 */
     fun setApiKey(key: String?) {
-        apiKey = key?.trim()?.takeIf { it.isNotBlank() }
+        val trimmed = key?.trim()?.takeIf { it.isNotBlank() }
+        apiKey = trimmed
+        EmpApiKeyStore.set(trimmed)
         rebuild()
     }
+
+    /** 当前是否已配置 emp-api key（用于驾驶舱提示）。 */
+    fun hasApiKey(): Boolean = !apiKey.isNullOrBlank()
 
     /** 当前 service 实例。首次调用时构建。 */
     val empApi: EmpApiService

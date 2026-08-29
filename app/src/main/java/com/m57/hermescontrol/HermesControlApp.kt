@@ -10,6 +10,7 @@ import coil3.gif.GifDecoder
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
 import com.m57.hermescontrol.data.local.AuthManager
+import com.m57.hermescontrol.data.local.EmpApiKeyStore
 import com.m57.hermescontrol.data.remote.NetworkMonitor
 import com.m57.hermescontrol.data.remote.OkHttpProvider
 import com.m57.hermescontrol.data.update.UpdateNoticeManager
@@ -21,6 +22,8 @@ class HermesControlApp :
     override fun onCreate() {
         super.onCreate()
         AuthManager.init(this)
+        // 初始化 emp-api key 的加密存储（驾驶舱用它调 emp-api）。
+        EmpApiKeyStore.initialize(this)
         // Issue #478: guarantee a "Default" profile is always selected so there is no
         // separate standalone/default code path anywhere in the app.
         AuthManager.ensureDefaultProfile()

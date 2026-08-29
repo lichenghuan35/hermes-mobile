@@ -36,6 +36,7 @@ import com.m57.hermescontrol.ui.settings.components.AppearanceSection
 import com.m57.hermescontrol.ui.settings.components.BehaviorSection
 import com.m57.hermescontrol.ui.settings.components.ChatSection
 import com.m57.hermescontrol.ui.settings.components.ConnectionSection
+import com.m57.hermescontrol.ui.settings.components.EmpApiKeySection
 import com.m57.hermescontrol.ui.settings.components.LanguageSection
 import com.m57.hermescontrol.ui.settings.components.TestConnectionButton
 import com.m57.hermescontrol.ui.settings.components.TestResultCard
@@ -79,6 +80,11 @@ internal fun SettingsConnectionPage(
                 viewModel = viewModel,
                 passwordVisible = passwordVisible,
                 onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+            )
+
+            EmpApiKeySection(
+                state = state,
+                viewModel = viewModel,
             )
 
             TestResultCard(testResult = state.testResult)

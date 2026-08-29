@@ -51,11 +51,17 @@ class DashboardViewModel : ViewModel() {
                     }
                 }
                 is NetworkResult.Failure -> {
+                    val msg =
+                        if (!EmpApiClient.hasApiKey()) {
+                            "尚未配置总裁 API key，请到 设置→连接→总裁 API key 填写后返回。"
+                        } else {
+                            "加载驾驶舱失败: ${result.error.message}"
+                        }
                     _uiState.update {
                         it.copy(
                             isLoading = false,
                             isRefreshing = false,
-                            errorMessage = "加载驾驶舱失败: ${result.error.message}",
+                            errorMessage = msg,
                         )
                     }
                 }
