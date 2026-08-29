@@ -43,9 +43,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.m57.hermescontrol.data.model.TaskComment
 import com.m57.hermescontrol.data.model.TaskDetailResponse
+import com.m57.hermescontrol.theme.DashboardBorder
+import com.m57.hermescontrol.theme.DashboardChatBubbleGrey
 import com.m57.hermescontrol.theme.DashboardInkPrimary
 import com.m57.hermescontrol.theme.DashboardInkSecondary
 import com.m57.hermescontrol.theme.DashboardLightRed
+import com.m57.hermescontrol.theme.DashboardWhite
 import com.m57.hermescontrol.theme.StatusGreen
 import com.m57.hermescontrol.theme.StatusGrey
 import com.m57.hermescontrol.theme.StatusRed
@@ -209,8 +212,8 @@ private fun TaskHeader(detail: TaskDetailResponse) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE1E3E8)),
+        colors = CardDefaults.cardColors(containerColor = DashboardWhite),
+        border = BorderStroke(1.dp, DashboardBorder),
     ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(t.title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = DashboardInkPrimary)
@@ -254,7 +257,7 @@ private fun CommentRow(comment: TaskComment) {
             Modifier
                 .widthIn(max = 300.dp)
                 .background(
-                    if (isBoss) DashboardLightRed else Color(0xFFF2F3F5),
+                    if (isBoss) DashboardLightRed else DashboardChatBubbleGrey,
                     RoundedCornerShape(10.dp),
                 )
                 .padding(horizontal = 10.dp, vertical = 8.dp),

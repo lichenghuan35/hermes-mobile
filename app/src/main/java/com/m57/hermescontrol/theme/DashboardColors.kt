@@ -35,3 +35,6 @@ val DashboardBlue = Color(0xFF3370FF)
 
 /** 卡片/文字用的白色（语义：置于 theme 供 UI 屏引用，避免裸 Color.White）。 */
 val DashboardWhite = Color.White
+
+/** 任务群聊里「对方评论」气泡的浅灰底。 */
+val DashboardChatBubbleGrey = Color(0xFFF2F3F5)

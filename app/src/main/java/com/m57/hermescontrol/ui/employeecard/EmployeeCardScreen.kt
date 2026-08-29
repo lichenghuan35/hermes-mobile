@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.m57.hermescontrol.data.model.EmployeeCard
+import com.m57.hermescontrol.theme.DashboardBorder
 import com.m57.hermescontrol.theme.DashboardInkPrimary
 import com.m57.hermescontrol.theme.DashboardInkSecondary
 import com.m57.hermescontrol.theme.DashboardInkWeak
@@ -148,7 +149,7 @@ private fun HeaderCard(card: EmployeeCard) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = DashboardWhite),
-        border = BorderStroke(1.dp, Color(0xFFE1E3E8)),
+        border = BorderStroke(1.dp, DashboardBorder),
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -219,7 +220,7 @@ private fun StatCell(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = DashboardWhite),
-        border = BorderStroke(1.dp, Color(0xFFE1E3E8)),
+        border = BorderStroke(1.dp, DashboardBorder),
     ) {
         Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
             Text("$value", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = DashboardInkPrimary)
@@ -238,7 +239,7 @@ private fun TaskRow(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = DashboardWhite),
-        border = BorderStroke(1.dp, Color(0xFFE1E3E8)),
+        border = BorderStroke(1.dp, DashboardBorder),
     ) {
         Row(
             Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
