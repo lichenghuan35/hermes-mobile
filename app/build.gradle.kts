@@ -11,13 +11,17 @@ plugins {
 android {
     namespace = "com.m57.hermescontrol"
 
+    // applicationId ≠ namespace：改 applicationId 实现与现装 Hermes Mobile 共存安装
+    // （包名 com.m57.hermesboss，老板手机可同时装「Hermes Mobile」和「Hermes 总裁版」）
+
     lint {
         disable += "MissingTranslation"
     }
     compileSdk = 37
     buildToolsVersion = "37.0.0"
     defaultConfig {
-        applicationId = "com.m57.hermescontrol"
+        // 独立包名 → 与现装 Hermes Mobile(com.m57.hermescontrol) 共存安装
+        applicationId = "com.m57.hermesboss"
         minSdk = 26
         targetSdk = 37
         // Version overrides passed from CI via -PversionName / -PversionCode
